@@ -1,0 +1,6 @@
+{
+  "name": "cordovatest",
+  "short_name": "cordovatest",
+  "start_url": "/",
+  "display": "standalone"
+}
