@@ -1,0 +1,61 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+       :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+    <iron-ajax auto url="http://web.ffgolf.org/ffgolf/tee/tee.php?gk=3997ea9a70419c996a59515c588fd7e8" handle-as="document" debounce-duration="300"
+      last-response="{{response}}" on-response="handleResponse">
+    </iron-ajax>
+    <div class="card">
+      <div class="circle">1</div>
+      <h1>Départs</h1>
+      <template is="dom-if" if="{{!listeCompetitions.length}}">
+        <div>aucun départ trouvé</div>
+      </template>
+      <template is="dom-repeat" items="[[listeCompetitions]]">
+        <div><span><a href="http://web.ffgolf.org/resultats/[[item.]]">[[item.1]] - [[item.4]]</a></span></div>
+      </template>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'my-view1',
+      listeCompetitions: {
+        type: Array,
+        notify: true,
+        value: function () {
+          return [];
+        }
+      },
+      response: {
+        type: Array
+      },
+      handleResponse: function (e) {
+        console.log("response...");
+        console.log(e.detail.xhr.response);
+        xpath = "/html/body/div[@id='tee']/table/tbody/tr";
+        
+        var departs = document.evaluate(xpath, e.detail.xhr.response, document, XPathResult.ANY_TYPE,
+          null);
+        console.log(departs);
+      }
+
+
+    });
+  </script>
+</dom-module>
