@@ -5,7 +5,7 @@ Cordova version: 6.4.0
 Config.xml file: 
 
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="fr.deze.depart" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="fr.deze.departs" version="2.8.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Golf des 24 heures</name>
     <description>
 Application du golf des 24 heures   

@@ -19,7 +19,7 @@
     },
     "installed_plugins": {
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "fr.deze.depart"
+            "PACKAGE_NAME": "fr.deze.departs"
         }
     },
     "dependent_plugins": {},

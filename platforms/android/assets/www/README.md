@@ -1,3 +1,8 @@
+cordova build --release android     
+
+ jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore /home/cd/ownCloud/perso/keystore android-release-unsigned.apk makey
+ zipalign -v 4 android-release-unsigned.apk fr.deze.departs.apk
+
 # Polymer App Toolbox - Starter Kit
 
 [![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
