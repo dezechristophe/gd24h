@@ -1,11 +1,12 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/gd24h-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/gd24h-accueil.html",
+    "src/gd24h-departs.html",
+    "src/gd24h-parcours.html",
+    "src/gd24h-resultats.html",
+    "src/gd24h-view404.html"
   ],
   "sourceGlobs": [
     "src/**/*",

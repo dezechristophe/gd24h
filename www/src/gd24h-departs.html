@@ -1,0 +1,99 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="gd24h-departs">
+  <template>
+    <style include="shared-styles">
+       :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+    <div class="card">
+      <h1>Départs</h1>
+      <template is="dom-if" if="[[!listeDeparts.length]]">
+        <div>aucun départ trouvé</div>
+      </template>
+
+      <div role="listbox">
+        <template is="dom-repeat" items="[[listeDeparts]]">
+          <a class="paper-item-link" href="[[item.url]]" tabindex="-1">
+            <paper-item>
+              <paper-item-body two-line>
+                <div>[[item.nom]]</div>
+                <div secondary>[[item.date]]</div>
+              </paper-item-body>
+            </paper-item>
+          </a>
+        </template>
+      </div>
+
+
+    </div>
+    <iron-ajax auto url="http://web.ffgolf.org/ffgolf/tee/tee.php?gk=3997ea9a70419c996a59515c588fd7e8" handle-as="document" last-response="{{response}}"
+      on-response="handleResponse">
+    </iron-ajax>
+  </template>
+  <script>
+    Polymer({
+      is: 'gd24h-departs',
+      properties: {
+
+        listeDeparts: {
+          type: Array,
+          notify: true,
+          value: function () {
+            return [];
+          }
+        }
+      },
+      response: {
+        type: Array
+      },
+      handleResponse: function (e) {
+        console.log("response...");
+        console.log(e.detail.xhr.response);
+        xpath = "/html/body/div[@id='tee']/table/tbody/tr[not(position()=1)]";
+        //*[@id="tee"]/table/tbody/tr[2]/td[1]
+        var departs = document.evaluate(xpath, e.detail.xhr.response, document, XPathResult.ANY_TYPE,
+          null);
+        //console.log(departs);
+        var depart = departs.iterateNext();
+
+        tmp = [];
+        while (depart) {
+          var competition = {};
+          console.log(depart);
+          date = depart.childNodes;
+          competition.date = date[1].innerText;
+          competition.nom = date[3].innerText;
+          competition.url = date[3].lastChild.href;
+          //this.listeDeparts.push(competition);
+          tmp.push(competition);
+          // .evaluate(xpathDate, depart, document, XPathResult.FIRST_ORDERED_NODE_TYPE,          null);
+          //console.log(date);
+          depart = departs.iterateNext();
+          //xpathDate= '/tr[2]/td[1]';
+          //*[@id="tee"]/table/tbody/tr[2]/td[6]
+
+        }
+        this.listeDeparts = tmp;
+        console.log(this.listeDeparts)
+
+      }
+
+
+    });
+  </script>
+</dom-module>

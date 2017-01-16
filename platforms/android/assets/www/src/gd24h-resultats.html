@@ -1,0 +1,77 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="gd24h-resultats">
+  <template>
+    <style include="shared-styles">
+       :host {
+        display: block;
+        padding: 10px;
+      }
+    </style>
+    <div class="card">
+      <h1>Liste des compétitions</h1>
+      <template is="dom-if" if="{{!listeCompetitions.length}}">
+        <div>aucun resultat trouvé</div>
+      </template>
+      <div role="listbox">
+        <template is="dom-repeat" items="[[listeCompetitions]]">
+          <a class="paper-item-link" href="http://web.ffgolf.org/resultats/[[item.0]]" tabindex="-1">
+            <paper-item>
+              <paper-item-body two-line>
+                <div>[[item.1]]</div>
+                <div secondary>[[item.4]]</div>
+              </paper-item-body>
+            </paper-item>
+          </a>
+        </template>
+      </div>
+    </div>
+    <iron-ajax auto url="http://web.ffgolf.org/resultats/listcompet.php?gk=3997ea9a70419c996a59515c588fd7e8" handle-as="document"
+      last-response="{{response}}" on-response="handleResponse">
+  </template>
+  <script>
+    Polymer({
+      is: 'gd24h-resultats',
+      properties: {
+        listeCompetitions: {
+          type: Array,
+          notify: true,
+          value: function () {
+            return [];
+          }
+        },
+      },
+      response: {
+        type: Array,
+        notify: true
+
+      },
+
+      handleResponse: function (e) {
+        xpath = "/html/body/script[3]";
+        //console.log(e.detail.xhr.response);
+        var lstCpt = document.evaluate(xpath, e.detail.xhr.response, document, XPathResult.FIRST_ORDERED_NODE_TYPE,
+          null);
+        var tempScriptElement = document.createElement('script');
+        tmpscript = lstCpt.singleNodeValue.innerHTML.split('$')[0]
+        tempScriptElement.innerHTML = tmpscript;
+
+        document.body.appendChild(tempScriptElement)
+        this.listeCompetitions = cpt;
+        //console.log(this.listeCompetitions);
+      },
+
+    });
+  </script>
+</dom-module>
