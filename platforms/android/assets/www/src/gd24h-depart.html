@@ -1,0 +1,90 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="gd24h-depart">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+        </style>
+        <div class="card">
+            <h1>Départs</h1>
+            <p>{{url.__queryParams.nom}}</p>
+            <template is="dom-if" if="[[!listeDeparts.length]]">
+                <div>aucun départ trouvé</div>
+            </template>
+            <div role="listbox">
+                <template is="dom-repeat" items="[[listeDeparts]]">
+                    <paper-item>
+                        <paper-item-body two-line>
+                            <div>[[item.heure]] - [[item.nom]]</div>
+                            <div secondary>[[item.index]] - Repère [[item.repere]] - [[item.serie]]</div>
+                        </paper-item-body>
+                    </paper-item>
+                </template>
+            </div>
+        </div>
+        <iron-ajax auto url="{{url.__queryParams.url}}" handle-as="document" last-response="{{response}}" on-response="handleResponse">
+    </template>
+    <script>
+        Polymer({
+            is: 'gd24h-depart',
+            attached: function () {
+                // if(this.url.path.substring(0,1) == '/'){
+                //     this.url = this.url.path.substring(1,this.url.path.length);
+                console.log(this.url);
+
+                //}
+            },
+            properties: {
+
+                url: {
+                    type: String,
+                    notify: true,
+                },               
+                listeDeparts: {
+                    type: Array,
+                    notify: true,
+                    value: function () {
+                        return [];
+                    }
+                },
+            },
+            handleResponse: function (e) {
+                //console.log(this.url);
+                //console.log(e.detail.xhr.response);
+                xpath = '//*[@id="tee"]/table/tbody/tr[(position()>1 and position()<last())]';
+                var departs = document.evaluate(xpath, e.detail.xhr.response, document, XPathResult.ANY_TYPE,
+                    null);
+                //console.log(departs);
+                var depart = departs.iterateNext();
+
+                tmp = [];
+                while (depart) {
+                    var joueur = {};
+                    //console.log(depart);
+                    date = depart.childNodes;
+                    //console.log(date);
+
+                    joueur.heure = date[1].innerText;
+                    joueur.tee = date[3].innerText;
+                    joueur.nom = date[5].innerText;
+                    joueur.club = date[7].innerText;
+                    joueur.dreapeau = date[9].innerText;
+                    joueur.index = date[11].innerText;
+                    joueur.serie = date[13].innerText;
+                    joueur.repere = date[15].innerText;
+                    tmp.push(joueur);
+                    depart = departs.iterateNext();
+                }
+                this.listeDeparts = tmp;
+                //console.log(this.listeDeparts)
+
+            }
+
+        });
+    </script>
+</dom-module>
