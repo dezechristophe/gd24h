@@ -4,6 +4,7 @@
   "fragments": [
     "src/gd24h-accueil.html",
     "src/gd24h-departs.html",
+    "src/gd24h-depart.html",
     "src/gd24h-parcours.html",
     "src/gd24h-resultats.html",
     "src/gd24h-view404.html"

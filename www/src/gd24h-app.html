@@ -21,10 +21,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="gd24h-icons.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../bower_components/iron-icons/places-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="shared-styles.html">
 <dom-module id="gd24h-app">
   <template>
-    <style  include="shared-styles">
+    <style include="shared-styles">
        :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
@@ -64,17 +67,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+    <!--<app-route route="{{subroute}}" pattern="/:param" data="{{subrouteData}}">-->
+    </app-route>
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
         <app-toolbar>
-          <a class="paper-item-link" name="gd24h-accueil" href="/gd24h-accueil">Accueil</a>
+          <paper-icon-item>
+            <iron-icon icon="home" item-icon></iron-icon><a class="paper-item-link" name="gd24h-accueil" href="/gd24h-accueil">Accueil</a></paper-icon-item>
         </app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="departs" href="/departs">Départs</a>
+          <!--<a name="departs" href="/departs">Départs</a>
           <a name="resultats" href="/resultats">Résultats</a>
-          <a name="parcours" href="/parcours">Parcours</a>
-          <a name="calendrier" href="/calendrier">Calendrier</a>
+          <div style="  vertical-align:top;"><iron-icon icon="places:golf-course" ></iron-icon><a name="parcours" href="/parcours">Parcours</a></div>
+          <a name="calendrier" href="/calendrier">Calendrier</a>-->
+          <paper-icon-item>
+            <iron-icon icon="social:group" item-icon></iron-icon><a name="departs" href="/departs">Départs</a></paper-icon-item>
+          <paper-icon-item>
+            <iron-icon icon="grade" item-icon></iron-icon><a name="resultats" href="/resultats">Résultats</a></paper-icon-item>
+          <paper-icon-item>
+            <iron-icon icon="places:golf-course" item-icon></iron-icon><a name="parcours" href="/parcours">Parcours</a></paper-icon-item>
+          <paper-icon-item>
+            <iron-icon icon="editor:format-list-numbered" item-icon></iron-icon><a name="calendrier" href="/calendrier">Calendrier</a></paper-icon-item>
         </iron-selector>
       </app-drawer>
       <!-- Main content -->
@@ -91,6 +105,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
           <gd24h-accueil name="accueil"></gd24h-accueil>
           <gd24h-departs name="departs"></gd24h-departs>
+          <gd24h-depart name="depart" url={{route}}></gd24h-depart>
           <gd24h-resultats name="resultats"></gd24h-resultats>
           <gd24h-parcours name="parcours"></gd24h-parcours>
           <gd24h-calendrier name="calendrier"></gd24h-calendrier>
@@ -100,8 +115,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </app-drawer-layout>
   </template>
   <script>
-    //TODO 
-    //loading sur les resultats
     Polymer({
       is: 'gd24h-app',
 
@@ -111,7 +124,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true,
           observer: '_pageChanged',
         },
-
+        // params: {
+        //   type: String,
+        //   reflectToAttribute: true,
+        //   observer: '_pageChanged',
+        // },
       },
 
       observers: [

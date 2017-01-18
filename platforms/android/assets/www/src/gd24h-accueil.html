@@ -9,7 +9,7 @@
 <link rel="import" href="shared-styles.html">
 <dom-module id="gd24h-accueil">
     <template>
-        <style  include="shared-styles">
+        <style include="shared-styles">
              :host {
                 display: block;
             }
@@ -31,10 +31,12 @@
             <paper-icon-item>
                 <iron-icon icon="communication:phone" item-icon>
                 </iron-icon>
-                <paper-item-body two-line>
-                    <div>02 43 42 00 36</div>
-                    <div secondary>Téléphone</div>
-                </paper-item-body>
+                <a href="tel:0243420036">
+                    <paper-item-body two-line>
+                        <div>02 43 42 00 36</div>
+                        <div secondary>Téléphone</div>
+                    </paper-item-body>
+                </a>
             </paper-icon-item>
             <a class="paper-item-link" href="http://www.golfdes24heures.fr" tabindex="-1">
                 <paper-icon-item>

@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div role="listbox">
         <template is="dom-repeat" items="[[listeDeparts]]">
-          <a class="paper-item-link" href="[[item.url]]" tabindex="-1">
+          <a class="paper-item-link" href="/depart?url={{item.url}}&nom={{item.nom}}" tabindex="-1">
             <paper-item>
               <paper-item-body two-line>
                 <div>[[item.nom]]</div>
@@ -78,7 +78,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           date = depart.childNodes;
           competition.date = date[1].innerText;
           competition.nom = date[3].innerText;
-          competition.url = date[3].lastChild.href;
+          competition.url = encodeURIComponent(date[3].lastChild.href)
+          /////competition.url = competition.url.substring(1,this.url.path.length);
           //this.listeDeparts.push(competition);
           tmp.push(competition);
           // .evaluate(xpathDate, depart, document, XPathResult.FIRST_ORDERED_NODE_TYPE,          null);
