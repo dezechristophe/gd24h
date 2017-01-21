@@ -1,0 +1,197 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="gd24h-resultat">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+        </style>
+        <div class="card">
+            <h1>Résultats</h1>
+            <p>{{url.__queryParams.nom}}</p>
+            <template is="dom-if" if="[[!listeResultats.length]]">
+                <div>aucun résultat trouvé</div>
+            </template>
+            <div role="listbox">
+                <template is="dom-repeat" items="[[listeResultats]]">
+                    <a href="/scores/?id=[[item._id]]&type=brut">
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div>[[item.serie.serie]]</div>
+                                <div secondary>BRUT </div>
+                            </paper-item-body>
+                        </paper-item>
+                    </a>
+                    <a href="/scores/?id=[[item._id]]&type=net">
+                        <paper-item>
+                            <paper-item-body two-line>
+                                <div>[[item.serie.serie]]</div>
+                                <div secondary>NET</div>
+                            </paper-item-body>
+                        </paper-item>
+                    </a>
+                    <div> </div>
+                </template>
+            </div>
+        </div>
+        <iron-localstorage name="gd24h-resultats-brut" value="{{listeResultats}}"></iron-localstorage>
+        <iron-localstorage name="gd24h-resultats-net" value="{{listeResultatsNet}}"></iron-localstorage>
+        <iron-ajax auto url="{{url.__queryParams.url}}" handle-as="document" last-response="{{response}}" on-response="handleResponse"></iron-ajax>
+        <iron-ajax auto url="{{url.__queryParams.url}}&res=N" handle-as="document" last-response="{{responseNet}}" on-response="handleResponseNet"></iron-ajax>
+    </template>
+    <script>
+        Polymer({
+            is: 'gd24h-resultat',
+            attached: function () {
+                // if(this.url.path.substring(0,1) == '/'){
+                //     this.url = this.url.path.substring(1,this.url.path.length);
+                console.log(this.url);
+
+                //}
+            },
+            properties: {
+
+                url: {
+                    type: String,
+                    notify: true,
+                },
+                listeResultats: {
+                    type: Array,
+                    notify: true,
+                    value: function () {
+                        return [];
+                    }
+                },
+                listeResultatsNet: {
+                    type: Array,
+                    notify: true,
+                    value: function () {
+                        return [];
+                    }
+                },
+            },
+            // initializeDefaultScores:function(){
+            //     this.
+            // },
+            handleResponse: function (e) {
+                xpath = '//*[@id="test"]/p[position()>2]/table/tbody/tr[1]/th'
+                var series = [];
+                var seriesXpathResult = document.evaluate(xpath, e.detail.xhr.response, document,
+                    XPathResult.ANY_TYPE,
+                    null);
+                //console.log(seriesXpathResult);
+                var serie = seriesXpathResult.iterateNext();
+                tmp = [];
+                var i = 0;
+                while (serie) {
+                    var joueurs = [];
+                    var infosSerie = serie.innerText.split(',');
+
+                    var xpath = Score = '//*[@id="test"]/p[3]/table/tbody/tr[position()>2]';
+                    var scores = document.evaluate(xpath, e.detail.xhr.response, null, XPathResult.ANY_TYPE,
+                        null);
+                    var score = scores.iterateNext();
+                    while (score) {
+                        var joueur = {};
+
+                        var detailsScore = score.childNodes;
+                        //console.log(detailsScore);
+                        joueur.classement = detailsScore[0].innerText;
+                        joueur.nom = detailsScore[2].innerText;
+                        joueur.index = detailsScore[3].innerText;
+                        joueur.club = detailsScore[4].innerText;
+                        joueur.score1 = detailsScore[5].innerText;
+                        joueur.score2 = detailsScore[6].innerText;
+                        joueur.score3 = detailsScore[7].innerText;
+                        joueur.score4 = detailsScore[8].innerText;
+                        joueur.scoreTotal = detailsScore[9].innerText;
+
+                        joueurs.push(joueur);
+                        score = scores.iterateNext();
+                    }
+
+                    series.push({
+                        'serie': {
+                            'type': infosSerie[0],
+                            'serie': infosSerie[1],
+                            'formule': infosSerie[2],
+                            'club': infosSerie[3],
+                        },
+                        'joueurs': joueurs,
+                        '_id': encodeURIComponent(i),
+                        'type': 'brut'
+
+                    })
+                    serie = seriesXpathResult.iterateNext();
+                    // console.log(typeof(series[i]['id']))
+                    i++;
+                }
+                this.listeResultats = series;
+                console.log(this.listeResultats)
+            },
+
+
+            handleResponseNet: function (e) {
+                xpath = '//*[@id="test"]/p[position()>2]/table/tbody/tr[1]/th'
+                var series = [];
+                var seriesXpathResult = document.evaluate(xpath, e.detail.xhr.response, document,
+                    XPathResult.ANY_TYPE,
+                    null);
+                //console.log(seriesXpathResult);
+                var serie = seriesXpathResult.iterateNext();
+                tmp = [];
+                var i = 0;
+                while (serie) {
+                    var joueurs = [];
+                    var infosSerie = serie.innerText.split(',');
+
+                    var xpath = Score = '//*[@id="test"]/p[3]/table/tbody/tr[position()>2]';
+                    var scores = document.evaluate(xpath, e.detail.xhr.response, null, XPathResult.ANY_TYPE,
+                        null);
+                    var score = scores.iterateNext();
+                    while (score) {
+                        var joueur = {};
+
+                        var detailsScore = score.childNodes;
+                        //console.log(detailsScore);
+                        joueur.classement = detailsScore[0].innerText;
+                        joueur.nom = detailsScore[2].innerText;
+                        joueur.index = detailsScore[3].innerText;
+                        joueur.club = detailsScore[4].innerText;
+                        joueur.score1 = detailsScore[5].innerText;
+                        joueur.score2 = detailsScore[6].innerText;
+                        joueur.score3 = detailsScore[7].innerText;
+                        joueur.score4 = detailsScore[8].innerText;
+                        joueur.scoreTotal = detailsScore[9].innerText;
+
+                        joueurs.push(joueur);
+                        score = scores.iterateNext();
+                    }
+
+                    series.push({
+                        'serie': {
+                            'type': infosSerie[0],
+                            'serie': infosSerie[1],
+                            'formule': infosSerie[2],
+                            'club': infosSerie[3],
+                        },
+                        'joueurs': joueurs,
+                        '_id': encodeURIComponent(i),
+                        'type': "net"
+                    })
+                    serie = seriesXpathResult.iterateNext();
+                    // console.log(typeof(series[i]['id']))
+                    i++;
+                }
+                this.listeResultatsNet = series;
+                console.log(this.listeResultatsNet)
+            }
+
+        });
+    </script>
+</dom-module>

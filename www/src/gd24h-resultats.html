@@ -25,11 +25,12 @@
         </template>
         <div role="listbox">
           <template is="dom-repeat" items="[[listeCompetitions]]">
-            <a class="paper-item-link" href="http://web.ffgolf.org/resultats/[[item.0]]" tabindex="-1">
+            <!--<a class="paper-item-link" href="http://web.ffgolf.org/resultats/[[item.0]]" tabindex="-1">-->
+            <a class="paper-item-link" href="/resultat?url=http://web.ffgolf.org/resultats/{{item.url}}&nom={{item.nom}}" tabindex="-1">
               <paper-item>
                 <paper-item-body two-line>
-                  <div>[[item.1]]</div>
-                  <div secondary>[[item.4]]</div>
+                  <div>[[item.nom]]</div>
+                  <div secondary>[[item.date]]</div>
                 </paper-item-body>
               </paper-item>
             </a>
@@ -72,15 +73,25 @@
       handleResponse: function (e) {
 
         xpath = "/html/body/script[3]";
-        console.log(e);
+        //console.log(e);
         var lstCpt = document.evaluate(xpath, e.detail.xhr.response, document, XPathResult.FIRST_ORDERED_NODE_TYPE,
           null);
         var tempScriptElement = document.createElement('script');
         tmpscript = lstCpt.singleNodeValue.innerHTML.split('$')[0]
         tempScriptElement.innerHTML = tmpscript;
+        var tmp = [];
 
         document.body.appendChild(tempScriptElement)
-        this.listeCompetitions = cpt;
+        for (i=0;i<cpt.length -1; i++) {
+          var competition = {};
+          competition.url = encodeURIComponent(cpt[i][0]);
+          competition.nom = cpt[i][1];
+          competition.status = cpt[i][2];
+          competition.type = cpt[i][3];
+          competition.date = cpt[i][4]; 
+          tmp.push(competition);                                       
+        }
+        this.listeCompetitions = tmp;
         //console.log(this.listeCompetitions);
         //this.loading = true;
       },

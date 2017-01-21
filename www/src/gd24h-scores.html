@@ -1,0 +1,84 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="gd24h-scores">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+        </style>
+        <iron-localstorage name="gd24h-storage" value="{{listeResultats}}"></iron-localstorage>
+        <div class="card">
+            <h1>Résultats</h1>
+            <!--<template is="dom-if" if="[[!score.length]]">
+                <div>aucun résultat trouvé</div>
+            </template>-->
+            <div role="listbox">
+                <div>[[score.serie.serie]]</div>
+                <template is="dom-repeat" items="[[score.joueurs]]" as="joueurs">
+                    <paper-item>
+                        <paper-item-body>
+                            <div>[[joueurs.classement]] [[joueurs.nom]] </div>
+                            <div>[[joueurs.scoreTotal]]</div>
+                        </paper-item-body>
+                    </paper-item>
+                </template>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'gd24h-scores',
+            attached: function () {
+                console.log(this._id);
+                if (this._id.__queryParams.type == 'brut') {
+                    console.log('brut');
+                    this.listeResultats = eval(localStorage.getItem('gd24h-resultats-brut'));
+                } else {
+                    console.log('net');
+                    this.listeResultats = eval(localStorage.getItem('gd24h-resultats-net'));
+
+                }
+                console.log('listeResultats', this.listeResultats);
+                this.id = this._id.__queryParams.id;
+                this.score = this.listeResultats[this.id];
+                console.log(this.score);
+
+
+            },
+            ready: function () {
+                console.log(this);
+
+            },
+            properties: {
+                id: {
+                    type: String,
+                    notify: true,
+                },
+                serie: {
+                    type: Object,
+                    notify: true,
+                },
+                joueurs: {
+                    type: Object,
+                    notify: true,
+                },
+                score: {
+                    type: Object,
+                    notify: true
+                },
+                listeResultats: {
+                    type: Array,
+                    notify: true,
+                    value: function () {
+                        localStorage.getItem('gd24h-resultats-brut');
+                    }
+                },
+
+            }
+        });
+    </script>
+</dom-module>

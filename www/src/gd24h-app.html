@@ -64,6 +64,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: inherit;
         text-decoration: none;
       }
+      
+      .bgimg {
+        background-image: url('../images/golf.png');
+      }
     </style>
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
@@ -74,6 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer">
         <app-toolbar>
           <paper-icon-item>
+            <!--<div style="background-image: url(../images/logo.jpg); height: 400px; width: 400px;">Text here</div>-->
             <iron-icon icon="home" item-icon></iron-icon><a class="paper-item-link" name="gd24h-accueil" href="/gd24h-accueil">Accueil</a></paper-icon-item>
         </app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
@@ -108,7 +113,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <gd24h-depart name="depart" url={{route}}></gd24h-depart>
           <gd24h-resultats name="resultats"></gd24h-resultats>
           <gd24h-parcours name="parcours"></gd24h-parcours>
+          <gd24h-resultat name="resultat"  url={{route}}></gd24h-resultat>          
           <gd24h-calendrier name="calendrier"></gd24h-calendrier>
+          <gd24h-scores name="scores"  _id={{route}}></gd24h-scores>
           <gd24h-view404 name="view404"></gd24h-view404>
         </iron-pages>
       </app-header-layout>

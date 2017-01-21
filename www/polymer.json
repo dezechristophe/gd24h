@@ -7,6 +7,7 @@
     "src/gd24h-depart.html",
     "src/gd24h-parcours.html",
     "src/gd24h-resultats.html",
+    "src/gd24h-resultat.html",
     "src/gd24h-view404.html"
   ],
   "sourceGlobs": [

@@ -10,7 +10,7 @@
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.0.0",
     "iron-icon": "PolymerElements/iron-icon#^1.0.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.0.0",
-    "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.0",
+    "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.6",
     "iron-media-query": "PolymerElements/iron-media-query#^1.0.0",
     "iron-pages": "PolymerElements/iron-pages#^1.0.0",
     "iron-selector": "PolymerElements/iron-selector#^1.0.0",
@@ -21,7 +21,8 @@
     "paper-carousel": "Redbility/paper-carousel#^1.1.0",
     "l2t-paper-slider": "^1.2.3",
     "paper-item": "PolymerElements/paper-item#^1.2.1",
-    "paper-spinner": "PolymerElements/paper-spinner#^1.2.1"
+    "paper-spinner": "PolymerElements/paper-spinner#^1.2.1",
+    "iron-signals": "PolymerElements/iron-signals#^1.0.3"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
